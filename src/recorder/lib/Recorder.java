@@ -174,6 +174,11 @@ public class Recorder {
         FileOutputStream fos = new FileOutputStream(file);
         logger.log(Level.INFO, "Saving to file:" + file.getAbsolutePath());
         save(fos);
+        try {
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
