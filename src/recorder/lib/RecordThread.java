@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 /**
  * Class used to record sound in a new thread.
  */
-public class RecordThread extends Thread {
+class RecordThread extends Thread {
 
     private boolean continueRecording;
     private byte[] recordData;
@@ -19,7 +19,7 @@ public class RecordThread extends Thread {
     /**
      * @param targetDataLine A TargetDataLine object from which the audio is read.
      */
-    public RecordThread(TargetDataLine targetDataLine) {
+    RecordThread(TargetDataLine targetDataLine) {
         this.targetDataLine = targetDataLine;
         continueRecording = true;
         logger = Logger.getLogger("recorder.lib.RecordThread");
@@ -56,15 +56,15 @@ public class RecordThread extends Thread {
         }
     }
 
-    public boolean isRecording() {
+    boolean isRecording() {
         return continueRecording;
     }
 
-    public void stopRecording() {
+    void stopRecording() {
         continueRecording = false;
     }
 
-    public byte[] getRecordData() {
+    byte[] getRecordData() {
         if (isRecording())
             return null;
         return recordData;

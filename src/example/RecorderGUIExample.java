@@ -22,7 +22,7 @@ class RecorderGUI extends JFrame implements ActionListener {
 
 
     //构造函数
-    public RecorderGUI() {
+    RecorderGUI() {
 
 
         recorderCore = new Recorder();

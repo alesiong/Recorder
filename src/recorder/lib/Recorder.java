@@ -35,8 +35,6 @@ public class Recorder {
             e.printStackTrace();
         }
 
-        System.out.println(targetDataLine.getBufferSize());
-
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
         try {
             sourceDataLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);

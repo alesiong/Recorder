@@ -6,14 +6,14 @@ import javax.sound.sampled.SourceDataLine;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-public class PlayThread implements Runnable {
+class PlayThread implements Runnable {
 
     private byte[] recordData = null;
     private AudioFormat audioFormat = null;
     private SourceDataLine sourceDataLine = null;
 
-    public PlayThread(byte[] recordData, AudioFormat audioFormat,
-                      SourceDataLine sourceDataLine) {
+    PlayThread(byte[] recordData, AudioFormat audioFormat,
+               SourceDataLine sourceDataLine) {
         this.recordData = recordData;
         this.audioFormat = audioFormat;
         this.sourceDataLine = sourceDataLine;
