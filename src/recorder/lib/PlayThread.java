@@ -6,37 +6,53 @@ import javax.sound.sampled.SourceDataLine;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-class PlayThread implements Runnable {
+/**
+ * Play sound in a new thread
+ */
+class PlayThread extends Thread {
 
-    private byte[] recordData = null;
+    /* raw data to be played */
+    private byte[] dataToPlay = null;
+
+    /* audio format of data */
     private AudioFormat audioFormat = null;
+
+    /* DataLine to play to */
     private SourceDataLine sourceDataLine = null;
 
-    PlayThread(byte[] recordData, AudioFormat audioFormat,
+    /**
+     * Create a audio player thread
+     * @param dataToPlay    Audio data to play with
+     * @param audioFormat   Format of the data
+     * @param sourceDataLine    DataLine to play to
+     */
+    PlayThread(byte[] dataToPlay, AudioFormat audioFormat,
                SourceDataLine sourceDataLine) {
-        this.recordData = recordData;
+        this.dataToPlay = dataToPlay;
         this.audioFormat = audioFormat;
         this.sourceDataLine = sourceDataLine;
     }
 
-    //播放baos中的数据即可
+    /**
+     * Main loop to play audio until the audio ends.
+     */
     @Override
     public void run() {
-        //转换为输入流
 
         byte buf[] = new byte[102400];
         try (ByteArrayInputStream byteArrayIS =
-                     new ByteArrayInputStream(recordData);
+                     new ByteArrayInputStream(dataToPlay);
              AudioInputStream audioIS =
                      new AudioInputStream(byteArrayIS, audioFormat,
-                             recordData.length / audioFormat.getFrameSize())) {
+                             dataToPlay.length / audioFormat.getFrameSize())) {
+            // starts playing
             sourceDataLine.start();
             int readBytes;
-            //读取数据到缓存数据
+
+            // reads data into buffer until there is no data left
             while ((readBytes = audioIS.read(buf, 0, buf.length)) != -1) {
+                // writes the buffer to the DataLine(speaker)
                 if (readBytes > 0) {
-                    //写入缓存数据
-                    //将音频数据写入到混频器
                     sourceDataLine.write(buf, 0, readBytes);
                 }
             }
@@ -47,7 +63,6 @@ class PlayThread implements Runnable {
             sourceDataLine.drain();
             sourceDataLine.stop();
         }
-
 
     }
 }
