@@ -1,4 +1,4 @@
-package recorder;
+package example;
 
 import recorder.lib.Recorder;
 
@@ -8,7 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
-public class RecorderGUI extends JFrame implements ActionListener {
+public class RecorderGUIExample {
+    public static void main(String args[]) {
+        new RecorderGUI();
+    }
+}
+
+class RecorderGUI extends JFrame implements ActionListener {
 
 
     private JButton captureBtn, stopBtn, playBtn, saveBtn;
