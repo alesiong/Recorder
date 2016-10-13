@@ -208,4 +208,11 @@ public class Recorder {
         sourceDataLine.close();
         super.finalize();
     }
+
+    /**
+     * @return <code>true</code> if there is audio data in buffer
+     */
+    public boolean hasData() {
+        return recordData != null;
+    }
 }
