@@ -81,34 +81,52 @@ class RecorderGUI extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getActionCommand().equals("captureBtn")) {
-            //点击开始录音按钮后的动作  
-            //停止按钮可以启动  
-            captureBtn.setEnabled(false);
-            stopBtn.setEnabled(true);
-            playBtn.setEnabled(false);
-            saveBtn.setEnabled(false);
+        switch (e.getActionCommand()) {
+            case "captureBtn":
+                //点击开始录音按钮后的动作
+                //停止按钮可以启动
+                captureBtn.setEnabled(false);
+                stopBtn.setEnabled(true);
+                playBtn.setEnabled(false);
+                saveBtn.setEnabled(false);
 
-            recorderCore.start();
-        } else if (e.getActionCommand().equals("stopBtn")) {
-            //点击停止录音按钮的动作  
-            captureBtn.setEnabled(true);
-            stopBtn.setEnabled(false);
-            playBtn.setEnabled(true);
-            saveBtn.setEnabled(true);
+                recorderCore.start();
+                break;
+            case "stopBtn":
+                stopBtn.setEnabled(false);
+                stopBtn.setText("Stopping");
+                recorderCore.stopWithCallback(this::stoppingEnds);
+                break;
 
-            recorderCore.stop();
+            case "playBtn":
 
-        } else if (e.getActionCommand().equals("playBtn")) {
-            recorderCore.play();
-        } else if (e.getActionCommand().equals("saveBtn")) {
-            try {
-                recorderCore.save();
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
+                playBtn.setEnabled(false);
+                recorderCore.playWithCallback(this::playingEnds);
+                break;
+
+            case "saveBtn":
+                try {
+                    recorderCore.save();
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+                }
+                break;
         }
 
     }
 
+    private void playingEnds(Void _void, Throwable throwable) {
+        if (throwable != null)
+            throwable.printStackTrace();
+        playBtn.setEnabled(true);
+    }
+
+    private void stoppingEnds(Void _void, Throwable throwable) {
+        if (throwable != null)
+            throwable.printStackTrace();
+        captureBtn.setEnabled(true);
+        playBtn.setEnabled(true);
+        saveBtn.setEnabled(true);
+        stopBtn.setText("Stop Recording");
+    }
 }
