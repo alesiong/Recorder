@@ -4,3 +4,4 @@ Recorder.iml
 out/
 *.wav
 src/META-INF
+src/test/
