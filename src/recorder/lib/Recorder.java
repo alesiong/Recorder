@@ -145,6 +145,26 @@ public class Recorder {
         recordData = recordThread.getRecordData();
     }
 
+    public void stopWithCallback(BiConsumer<Void, Throwable> callback) {
+        if (!recordThread.isRecording()) {
+            // TODO: Change to more specific Exception
+            throw new NullPointerException();
+        }
+        CompletableFuture<Void> work = CompletableFuture.runAsync(
+                () -> {
+                    recordThread.stopRecording();
+                    try {
+                        // wait for actually stopping
+                        recordThread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    recordData = recordThread.getRecordData();
+                }
+        );
+        work.whenComplete(callback);
+    }
+
     /**
      * Write the audio data to an {@link java.io.OutputStream OutpuStream}.
      * Actually the stream is written with .wav file style, maybe changed into
