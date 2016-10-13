@@ -123,7 +123,7 @@ public class Recorder {
 
     /**
      * Stop recording and save the raw audio data to buffer.
-     * This method may block when draning data from the DataLine buffer.
+     * This method may block when draining data from the DataLine buffer.
      *
      * @throws NullPointerException The method is called when the recording
      *                              did not start.
