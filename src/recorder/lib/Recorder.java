@@ -2,6 +2,8 @@ package recorder.lib;
 
 import javax.sound.sampled.*;
 import java.io.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -200,6 +202,13 @@ public class Recorder {
         PlayThread player = new PlayThread(recordData, audioFormat, sourceDataLine);
         player.start();
 
+    }
+
+    public void playWithCallback(BiConsumer<Void, Throwable> callback) {
+        // create a thread to play audio in background
+        PlayThread player = new PlayThread(recordData, audioFormat, sourceDataLine);
+        CompletableFuture<Void> work = CompletableFuture.runAsync(player);
+        work.whenComplete(callback);
     }
 
     @Override
